@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Log Clustering based Problem Identification for Online Service Systems</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/solarized.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,8 +24,76 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+
+
+				<section>
+					<h3>Log Clustering based Problem Identification for Online Service Systems <em>(ICSE '16)</em></h3>
+					<p><strong>Authors</strong>: Qingwei Lin, Hongyu Zhang, Jian-Guang Lou, Yu Zhang, Xuewei Chen</p>
+					<p><strong>Presenter</strong>: Xingan Wang</p>
+				</section>
+
+				<section>
+					<h2>TOC</h2>
+					<ul>
+						<li>Background and Motivation</li>
+						<li>The Approach</li>
+						<li>Experimental Design and Results</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h2>Background and Motivation</h2>
+					<ul>
+						<li>
+							Logs are important
+							<p>
+								> Especially for Big Data environment where other software debugging techniques are difficult to be applied.
+							</p>
+						</li>
+						<li>
+							Although important, log-based problem identification is not easy.
+							<p>
+								> Especially by manually examining a huge number of log messages.
+							</p>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h3>ICSE’13 approach has limitations</h3>
+						<ul>
+							<li>
+								<strong>Precision is still rather low</strong>
+							</li>
+							<p>It does not consider the potential similarity between two log sequences when they are not repetition or permutation of each other.</p>
+							<p>But log sequences are highly diverse and log events are not equal in importance.</p>
+							<blockquote> > “E1, E2, E3, E3, E5, E6” and “E1, E3, E5, E2, E6” are reduced to be the same</blockquote>
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li>
+								<strong>Not utilize the previous known failures</strong>
+							</li>
+							<p>Many of the failures are <strong>recurrent</strong> ones, whose mitigations/resolutions are already known to the engineers and whose corresponding logs need not to be examined again.</p>
+							<p>But ICSE’13 approach requires the engineers to examine <strong>all</strong> delta sequences.</p>
+						</ul>
+					</section>
+					<section>
+						<h3>Log Cluster</h3>
+						<ul>
+							<li>Utilizes the characteristics of logs of online service systems to facilitate log- based problem identification.</li>
+							<li>Addresses the limitations of the previous approaches and <strong>outperforms</strong> them.</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h2>The Approach</h2>
+				</section>
+
 			</div>
 		</div>
 
