@@ -11,6 +11,7 @@
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="css/pres-demo.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -90,8 +91,109 @@
 					</section>
 				</section>
 
+
 				<section>
-					<h2>The Approach</h2>
+					<section>
+						<h2>The Approach</h2>
+						<img width="682" data-src="assets/overview.png" alt="overview">
+					</section>
+					<section>
+						<h3>Major steps</h3>
+						<ul>
+							<li><strong>Log Vectorization:</strong> Turn each log sequence into a vector.</li>
+							<li><strong>Log Clustering:</strong> Calculate the similarity value between two log sequences and group the similar log sequences into clusters.</li>
+							<li><strong>Extracting Representative Log Sequence:</strong> Select a representative log sequence from each cluster by choosing the centroid of the cluster.</li>
+						</ul>
+					</section>
+					<section>
+						<ul>
+							<li><strong>Checking Recurrence</strong></li>
+						</ul>
+						<ol>
+							<li>Checks if a representative log sequence appears before by querying a knowledge base.</li>
+							<li>The knowledge base is also updated with the new clusters.</li>
+						</ol>
+						<img width="590" data-src="assets/overview.png" alt="overview">
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>Log Vectorization</h3>
+						<ol>
+							<li>Parse free-form raw log messages using log abstraction</li>
+							<li>Produces log sequences by deduplicating and linking same ID</li>
+							<li>Weighting with <strong>Inverse Document Frequency</strong> and <strong>Contrast</strong>: \[w(t) = 0.5 × Norm(w_{idf}(t)) + 0.5 × w_{con}(t)\]</li>
+						</ol>
+					</section>
+
+					<section>
+						<p class="center-text">
+							After calculating the weight for each event, we can represent a log sequence as a vector of weight in an N-dimensional space.
+						</p>
+						<img width="590" data-src="assets/vectorization.png" alt="vectorization">
+					</section>
+				</section>
+
+				<section>
+					<h3>Log Clustering</h3>
+					<p>(Agglomerative Hierarchical clustering)</p>
+					<img width="590" data-src="assets/clustering.png" alt="clustering">
+					\[Similarity(S_i, S_j) = \frac{S_i \cdot \S_j}{\|S_i\|\|S_j\|}\]
+				</section>
+
+				<section>
+					<h3>Extracting Representative Log Sequence</h3>
+					<p class="center-text">Compute the score of each log sequence i in a cluster based on its average distance to other log sequences in the same cluster:</p>
+					\[Score(i) = \frac{1}{n-1}\sum^{n}_{j=1}(1 − Similarity(S_i, S_j))\]
+					<p class="center-text">Select the log sequence with the minimal score for manual examination.</p>
+				</section>
+
+				<section>
+					<h3>Checking Recurrence</h3>
+					<ol>
+						<li>Select representative log sequence of the new cluster.</li>
+						<li>Use same cosine similarity measure with existing knowledge base.</li>
+						<li>If recurrent and corresponds to a known failure, the associated mitigation actions are retrieved from the knowledge base.</li>
+						<li>New representative is returned for manual examination and update the knowledge base.</li>
+					</ol>
+				</section>
+
+
+				<section>
+					<h2>Experiments</h2>
+					<ul>
+						<li>Same application: WordCount, PageRank</li>
+						<li>Two addition Microsoft Services added(X and Y).</li>
+						<li>Collect: Hadoop logs, MS services logs (3.3m from X, 10m from Y)</li>
+						<li>Hardware: A cluster with 46 cores across ﬁve machines. Each PC has Intel(R) Core(TM) i7- 3770 CPU and 16GB RAM.</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Results</h2>
+						<ol>
+							<li>RQ1: How much effort reduction does LogCluster achieve?</li>
+							<li>RQ2: How accurate is LogCluster in identifying problems?</li>
+							<li>RQ3: The impact of the distance threshold</li>
+						</ol>
+					</section>
+
+					<section>
+						<img data-src="assets/rq1.png" alt="efforts">
+						<img width="60%" data-src="assets/rq1tb3.png" alt="efforts table3">
+						<p style="font-size: 16px">Measured in terms of #log sequences to be examined. Numbers in brackets indicate the precision values (i.e., the percentage of examined log sequences that are associated with the actual failures).</p>
+					</section>
+
+					<section>
+						<img width="45%" src="assets/precision.png" alt="precision">
+						<p style="font-size: 18px">
+							> LogCluster achieves the best overall accuracy. And is insensitive to the distance threshold.
+						</p>
+					</section>
+
 				</section>
 
 			</div>
@@ -105,12 +207,18 @@
 			Reveal.initialize({
 				history: true,
 
+				math: {
+					// mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+					config: 'TeX-AMS_HTML-full'
+				},
+
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/math/math.js', async: true }
 				]
 			});
 		</script>
